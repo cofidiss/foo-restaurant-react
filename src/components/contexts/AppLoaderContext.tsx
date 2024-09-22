@@ -15,7 +15,12 @@ export const AppLoaderProvider: React.FC<PropsWithChildren> = ( {children} ) => 
   const [loadingCount, setLoadingCount] = React.useState(0);
 
   const startLoading = () => setLoadingCount((prev) => prev + 1);
-  const stopLoading = () => setLoadingCount((prev) => Math.max(prev - 1, 0)); // 0'dan aşağıya düşmez
+  const stopLoading = () => setLoadingCount((prev) => {
+    if(prev<1){
+throw new Error("loadingcount 0 altına düşemez.");
+  }
+  return prev - 1;}
+); // 0'dan aşağıya düşmez
 
   return (
     <AppLoaderContext.Provider value={{ loading: loadingCount > 0, startLoading, stopLoading }}>

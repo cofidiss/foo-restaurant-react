@@ -7,12 +7,12 @@ import { AppLoaderProvider } from "./components/contexts/AppLoaderContext"; // Y
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-  <React.StrictMode>
+<div> 
     <CssBaseline />
     <BrowserRouter>
       <AppLoaderProvider>
         <App />
       </AppLoaderProvider>
     </BrowserRouter>
-  </React.StrictMode>
+    </div>
 );
