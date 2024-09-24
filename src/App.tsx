@@ -9,8 +9,8 @@ const App: React.FC = () => {
   console.log("App renderer");
   return (<div>
     <Routes>
-      <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Home />} />
     </Routes>   
     </div>
 

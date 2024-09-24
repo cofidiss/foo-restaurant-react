@@ -11,37 +11,37 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import { AppLoaderContext } from "../contexts/AppLoaderContext"; // Yeni dosyadan içe aktarıyoruz
+import { debug } from "console";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
+  debugger; 
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+const baseUrl = process.env.REACT_APP_BASE_URL;
   const { startLoading, stopLoading } = useContext(AppLoaderContext); // Context'ten loader'ı kontrol etmek için kullanılır
 
   const handleLogin = () => {
     startLoading(); // İşlem başlamadan önce loading durumunu aktif et
     setError(""); // Hata mesajını temizle
 
-    fetch("https://your-api-endpoint.com/login", {
+    fetch(`${baseUrl}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ userName, password }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          // Başarılı giriş
-          console.log("Giriş başarılı", data);
-          navigate("/dashboard"); // Başarılı giriş sonrası yönlendirme
-        } else {
-          // Başarısız giriş
-          setError(data.message || "Giriş başarısız");
-        }
-      })
+      .then((response) => {
+        if(response.ok){
+        console.log("Giriş başarılı");
+          navigate("/"); // Başarılı giriş sonrası yönlendirme
+      }
+      else {
+        response.text().then(x=>     setError(x || "Giriş başarısız"))
+
+      } })      
       .catch((error) => {
         setError("Sunucuya bağlanırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
       })
@@ -63,12 +63,12 @@ const Login: React.FC = () => {
           Login
         </Typography>
         <TextField
-          label="Email"
+          label="UserName"
           variant="outlined"
           fullWidth
           margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
           required
         />
         <TextField
