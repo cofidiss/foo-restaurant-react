@@ -1,6 +1,6 @@
 import React, { useContext, useReducer } from "react";
 import { Button, TextField, Container, Typography, Box } from "@mui/material";
-import { AppLoaderContext } from "../contexts/AppLoaderContext";
+import { AppContext } from "../contexts/AppContext";
 import { PassThrough } from "stream";
 import { useNavigate } from "react-router-dom";
 const Signup: React.FC = () => {
@@ -31,7 +31,7 @@ const Signup: React.FC = () => {
   };
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const { startLoading, stopLoading } = useContext(AppLoaderContext); // Context'ten loader'ı kontrol etmek için kullanılır
+  const { startLoading, stopLoading } = useContext(AppContext); // Context'ten loader'ı kontrol etmek için kullanılır
   // Reducer fonksiyonu
   function formReducer(state: FormState, action: FormAction): FormState {
     switch (action.type) {

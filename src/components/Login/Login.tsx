@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { AppLoaderContext } from "../contexts/AppLoaderContext"; // Yeni dosyadan içe aktarıyoruz
+import { AppContext } from "../contexts/AppContext"; // Yeni dosyadan içe aktarıyoruz
 import { debug } from "console";
 
 const Login: React.FC = () => {
@@ -20,7 +20,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 const baseUrl = process.env.REACT_APP_BASE_URL;
-  const { startLoading, stopLoading } = useContext(AppLoaderContext); // Context'ten loader'ı kontrol etmek için kullanılır
+  const { startLoading, stopLoading,setIsLoggedIn } = useContext(AppContext); // Context'ten loader'ı kontrol etmek için kullanılır
 
   const handleLogin = () => {
     startLoading(); // İşlem başlamadan önce loading durumunu aktif et
@@ -36,6 +36,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
       .then((response) => {
         if(response.ok){
         console.log("Giriş başarılı");
+        setIsLoggedIn(true);
           navigate("/"); // Başarılı giriş sonrası yönlendirme
       }
       else {

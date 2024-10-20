@@ -5,6 +5,10 @@ import Login from './components/Login/Login';
 import { Routes,Route, Link } from 'react-router-dom';
 import Home from './components/Home/Home';
 import SignUp from './components/SignUp/SignUp';
+import Menu from './components/Menu/Menu';
+import Cart from './components/Cart/Cart';
+import Order from './components/Order/Order';
+import FilterOrders from './components/Order/FilterOrders';
 
 const App: React.FC = () => {
   console.log("App renderer");
@@ -12,7 +16,10 @@ const App: React.FC = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Menu />} />
+      <Route path="/order" element={<Order />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/FilterOrders" element={<FilterOrders />} />
     </Routes>   
     </div>
 
