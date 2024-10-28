@@ -4,12 +4,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { CartDto } from '../../types/types';
 import { AppContext } from '../contexts/AppContext';
 import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const Cart: React.FC = () => {
     const navigate = useNavigate();
   const [cartDto, setCartDto] = useState<CartDto>({ cartItemDetailDtoList: [], message: '' });
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const { startLoading, stopLoading,refreshNavbar } = useContext(AppContext); // Context'ten loader'ı kontrol etmek için kullanılır
+  const { startLoading, stopLoading,refreshNavbar,globalCss } = useContext(AppContext); // Context'ten loader'ı kontrol etmek için kullanılır
 
   useEffect(() => {
     getCartItems();
@@ -71,13 +73,17 @@ const Cart: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container       sx={{
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
       <Typography variant="h4" align="center" gutterBottom>
-        Sepet
+        Cart
       </Typography>
-      <Button variant="outlined" style={{ marginBottom: '20px' }}>
-        Ürünler
-      </Button>
+
       <Grid container spacing={2}>
         {cartDto?.cartItemDetailDtoList.length > 0 ? (
           cartDto.cartItemDetailDtoList.map((item) => (
@@ -88,25 +94,27 @@ const Cart: React.FC = () => {
                     <DeleteIcon />
                   </IconButton>
                   <Typography variant="h6" style={{ margin: '0 15px' }}>
-                    {item.quantity}
+                    {item.quantity} <CloseIcon/>
                   </Typography>
                   <div>
                     <Typography variant="h6">{item.foodName}</Typography>
                     <Typography variant="body2">{item.foodDescription}</Typography>
-                    <Typography variant="body2">{item.unitPrice} ₺</Typography>
+                    <Typography variant="body2">{item.unitPrice * item.quantity} ₺</Typography>
                   </div>
                 </CardContent>
               </Card>
             </Grid>
           ))
         ) : (
+          <Grid item xs={12}>
           <Typography variant="body1" align="center" color="textSecondary">
-            Sepetiniz boş.
+            Cart Is Empty
           </Typography>
+        </Grid>
         )}
       </Grid>
-      <Button variant="contained" color="error" style={{ marginTop: '20px' }} onClick={()=> navigate("/order")}>
-        Sepeti Onayla
+      <Button disabled={!(cartDto?.cartItemDetailDtoList.length > 0)} variant="contained" color="error" style={{ marginTop: '20px' }} onClick={()=> navigate("/order")}>
+        Confirm Basket
       </Button>
     </Container>
   );

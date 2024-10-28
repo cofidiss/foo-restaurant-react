@@ -58,8 +58,11 @@ export interface FoodInfoDto {
     navbarProps:NavbarProps;
     setIsLoggedIn:(param:boolean)=>void;
     isLoggedIn:boolean;
+    globalCss:globalCss
   };
-
+  export interface globalCss{
+componentBackgroundColor:string
+  }
   export interface NavbarProps {
    itemCount:number
   };
@@ -112,7 +115,7 @@ export interface CartItemDetailDto {
 export 
 interface UpdateOrderProps {
   orderId: number;
-  filterOrders:()=>void
+  filterOrders:()=>void;
 }
   export interface StatusLov{
 

@@ -1,12 +1,18 @@
 import React, { ReactNode, PropsWithChildren, useEffect, useState } from "react";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress, CssBaseline } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Navbar from "../Navbar/Navbar";
 import { AppContextType, CartDto, CustomModalProps, NavbarProps } from "../../types/types";
 import CustomModal from "../CustomModal/CustomModal";
-
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#f0f2f5', // Arka plan rengi
+    },
+  },
+});
 
   export const AppContext = React.createContext<AppContextType>({
   loading: false,
@@ -17,7 +23,8 @@ import CustomModal from "../CustomModal/CustomModal";
   navbarProps: {itemCount:0},
   refreshNavbar: () => {},
   setIsLoggedIn: () => {},
-  isLoggedIn:false
+  isLoggedIn:false  ,
+  globalCss:{componentBackgroundColor:"#f9f9f933"}
 });
 
 export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -78,7 +85,9 @@ const refreshNavbar= ()=> {
       .then((response) => {
 
         if(response.ok){
-return response.json().then(x=> setNavbarState( {itemCount: ((x as CartDto).cartItemDetailDtoList.length)}))
+return response.json().then(x=> setNavbarState( {itemCount: ( (x as CartDto).cartItemDetailDtoList.reduce((sum, item) => {
+  return sum + item.quantity;
+}, 0) )}))
 }     
 
 else {
@@ -106,10 +115,15 @@ else {
       navbarProps:navbarState,
       refreshNavbar:refreshNavbar ,
       setIsLoggedIn:setIsLoggedIn,
-      isLoggedIn:isLoggedIn
-    }}>
+      isLoggedIn:isLoggedIn,
+      globalCss:{componentBackgroundColor:"#f9f9f933"}
+    }} >
             <Navbar  itemCount={navbarState.itemCount}/>
-      {children}
+            <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+       
+            </ThemeProvider>
       <Backdrop
         sx={{
           color: '#fff',
@@ -151,7 +165,7 @@ else {
 
           {modal2State.children}
          </CustomModal>
-      )
+      
     </AppContext.Provider>
     </LocalizationProvider>
   );

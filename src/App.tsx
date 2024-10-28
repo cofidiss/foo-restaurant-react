@@ -9,20 +9,29 @@ import Menu from './components/Menu/Menu';
 import Cart from './components/Cart/Cart';
 import Order from './components/Order/Order';
 import FilterOrders from './components/Order/FilterOrders';
+import { Container } from '@mui/material';
 
 const App: React.FC = () => {
   console.log("App renderer");
-  return (<div>
+  return (
+    <Container sx={{ backgroundColor: '#f9f9f9',
+      marginTop: '2rem',
+      padding: '2rem',
+      borderRadius: '15px', // Kenarları yuvarlak hale getirdik
+      boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)', // Hafif bir gölge ekledik
+
+    }} >
     <Routes>
+
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/" element={<Menu />} />
+      <Route path="/menu" element={<Menu />} />
       <Route path="/order" element={<Order />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/FilterOrders" element={<FilterOrders />} />
+      <Route path="/" element={<Menu />} />
     </Routes>   
-    </div>
-
+    </Container>
   );
 };
 export default App;

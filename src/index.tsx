@@ -7,8 +7,8 @@ import { AppProvider } from "./components/contexts/AppContext"; // Yeni dosyadan
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-<div> 
-    <CssBaseline />
+<div style={{ height:"100vh"}}> 
+
     <BrowserRouter>
       <AppProvider>
         <App />

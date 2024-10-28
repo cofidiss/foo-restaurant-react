@@ -1,11 +1,11 @@
 export enum enDays{
-   Pazar,
-    Pazartesi,
-    Salı,
-    Çarşamba,
-    Perşembe,
-    Cuma,
-    Cumartesi
+   Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday
    
     }
 

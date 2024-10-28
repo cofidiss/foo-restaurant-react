@@ -2,25 +2,21 @@ import React, { useState, useEffect, useContext } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import DaySelector from '../../components/Menu/DaySelector';
 import FoodCategory from '../../components/Menu/FoodCategory';
-import { Container, Typography, Grid2 } from '@mui/material';
+import { Container, Typography, Box, Grid } from '@mui/material';
 import { enDays } from '../constants/enum';
 import { AppContext } from '../contexts/AppContext';
 import { FoodCategoryData } from '../../types/types';
 
-
-
 const Menu: React.FC = () => {
-
-  const { startLoading, stopLoading ,setModal1State} = useContext(AppContext);
-  const [selectedDay, setSelectedDay] = useState<enDays>(enDays.Pazartesi);
+  const { startLoading, stopLoading, setModal1State } = useContext(AppContext);
+  const [selectedDay, setSelectedDay] = useState<enDays>(0);
   const [foodCategories, setFoodCategories] = useState<FoodCategoryData[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const fetchData = async () => {
     try {
-      debugger;
       startLoading();
       const response = await fetch(`${baseUrl}/api/food/weekday/${selectedDay}`);
       if (!response.ok) {
@@ -29,10 +25,14 @@ const Menu: React.FC = () => {
       const data: FoodCategoryData[] = await response.json();
       setFoodCategories(data);
     } catch (error: any) {
-      setErrorMessage(error.message);
-      setModal1State({isOpen:true,message:error.message,okButtonText:"Tamam",okButtonClick:()=>setModal1State({isOpen:false}) })
+
+      setModal1State({
+        isOpen: true,
+        message: "There was a server error.",
+        okButtonText: "Ok",
+        okButtonClick: () => setModal1State({ isOpen: false }),
+      });
     } finally {
-      debugger;
       stopLoading();
     }
   };
@@ -41,45 +41,54 @@ const Menu: React.FC = () => {
     fetchData();
   }, [selectedDay]);
 
-
-
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+
+
 
       <Container
         sx={{
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'  
+
         }}
       >
-        <Typography variant="h4" align="center" gutterBottom>
-          Yemek Menüsü
+        <Typography variant="h4" align="center" gutterBottom sx={{ marginBottom: '1rem' }}>
+          Weekly Menu
         </Typography>
-        <DaySelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-        <Typography variant="h5" align="center" gutterBottom>
-          {selectedDay}
+
+        <Box sx={{ marginBottom: '1rem', width: '100%' }}>
+          {/* Gün seçici bileşen */}
+          <DaySelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
+        </Box>
+
+        <Typography variant="h5" align="center" gutterBottom sx={{ marginBottom: '2rem' }}>
+  
         </Typography>
-        <Grid2
+
+        <Grid
           container
           spacing={2}
           sx={{
             flex: 1,
-            height: '100%',
             width: '100%',
             justifyContent: 'center',
-            alignItems: 'center',
           }}
         >
-          {foodCategories.map((category, index) => (
-            <FoodCategory 
-              key={index} 
-              category={category.categoryName} 
-              foodList={category.foodList} 
-            />
-          ))}
-        </Grid2>
-      </Container>     
+          {foodCategories.length > 0 ? (
+            foodCategories.map((category, index) => (
+              <FoodCategory key={index} category={category.categoryName} foodList={category.foodList} />
+            ))
+          ) : (
+            <Typography variant="body1" color="textSecondary">
+             There is no menu for the day.
+            </Typography>
+          )}
+        </Grid>
+      </Container>
     </div>
   );
 };

@@ -29,30 +29,43 @@ const CustomModal: React.FC<PropsWithChildren< CustomModalProps>> = ({
       throw new Error("If 'okButtonText' is provided, 'leftButtonText' and 'rightButtonText' must not be defined.");
     }
   return (
-    <Dialog open={isOpen} >
-      {title && <DialogTitle>{title}</DialogTitle>}
-      <DialogContent>
-        {children}
-        {message && <Typography>{message}</Typography>}
-      </DialogContent>
-      <DialogActions>
-        {leftButtonText && (
-          <Button onClick={leftButtonClick} color="primary">
-            {leftButtonText}
-          </Button>
-        )}
-        {okButtonText && (
-          <Button onClick={okButtonClick} color="primary">
-            {okButtonText}
-          </Button>
-        )}
-        {rightButtonText && (
-          <Button onClick={rightButtonClick} color="primary">
-            {rightButtonText}
-          </Button>
-        )}
-      </DialogActions>
-    </Dialog>
+<Dialog open={isOpen}>
+  <div 
+    style={{ 
+ 
+      display: "flex", 
+      flexDirection: "column", 
+      justifyContent: "space-between" 
+    }}
+  > 
+    {title && <DialogTitle>{title}</DialogTitle>}
+    <DialogContent>
+      {children}
+      {message && <Typography>{message}</Typography>}
+    </DialogContent>
+    <DialogActions style={{ justifyContent: "space-evenly" }}>
+      {okButtonText && (
+        <Button
+          onClick={okButtonClick}
+          sx={{ backgroundColor: "green", color: "white", "&:hover": { backgroundColor: "darkgreen" } }}
+        >
+          {okButtonText}
+        </Button>
+      )}
+      {leftButtonText && (
+        <Button onClick={leftButtonClick} color="primary">
+          {leftButtonText}
+        </Button>
+      )}
+      {rightButtonText && (
+        <Button onClick={rightButtonClick} color="primary">
+          {rightButtonText}
+        </Button>
+      )}
+    </DialogActions>
+  </div>
+</Dialog>
+
   );
 };
 

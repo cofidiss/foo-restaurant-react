@@ -1,51 +1,70 @@
-import React ,{useContext} from 'react';
-import { Card, CardContent, Typography, CardActions, Button } from '@mui/material';
+import React, { useContext } from 'react';
+import { Card, CardContent, Typography, CardActions, Button, Box } from '@mui/material';
 import { AppContext } from '../contexts/AppContext';
-import { useNavigate } from "react-router-dom";
 import { FoodCardProps } from '../../types/types';
 
-const FoodCard: React.FC<FoodCardProps> = ({ name, price, description,id ,isOrderingEnabled}) => {
+const FoodCard: React.FC<FoodCardProps> = ({ name, price, description, id, isOrderingEnabled }) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const { startLoading, stopLoading ,refreshNavbar} = useContext(AppContext); // Context'ten loader'ı kontrol etmek için kullanılır
+  const { startLoading, stopLoading, refreshNavbar } = useContext(AppContext);
 
   const addFoodToCart = () => {
-    startLoading(); // İşlem başlamadan önce loading durumunu aktif et
-
+    startLoading();
     fetch(`${baseUrl}/api/cart`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(id),
     })
-      .then((response) => {
-        if(response.ok){
-              }
-      else {
-        // response.text().then(x=>     setError(x || "Giriş başarısız"))
-
-      } })      
-      .catch((error) => {
-        // setError("Sunucuya bağlanırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
-      })
       .finally(() => {
-        debugger;
         refreshNavbar();
-        stopLoading(); // İşlem tamamlandıktan sonra loading durumunu kapat
+        stopLoading();
       });
   };
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h6">{name}</Typography>
-        <Typography color="textSecondary">{price}</Typography>
-        <Typography variant="body2">{description}</Typography>
-        <img src={`${baseUrl}/images/${id}.jpg`} alt="Description"></img>
+    <Card sx={{
+      borderRadius: '10px',
+      boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)',
+      transition: 'transform 0.3s ease',
+      '&:hover': { transform: 'scale(1.03)' },
+    }}>
+      <CardContent sx={{ textAlign: 'center' }}>
+        <img 
+          src={`${baseUrl}/images/${name}.jpg`} 
+          alt={name} 
+          style={{ width: '100%', height: 'auto', borderRadius: '8px', marginBottom: '1rem' }} 
+        />
+        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+          {name}
+        </Typography>
+        <Typography sx={{ fontSize: '1.25rem', color: '#555', marginBottom: '1rem' }}>
+          {price} TL
+        </Typography>
+        <Typography variant="body2" color="textSecondary">
+          {description}
+        </Typography>
       </CardContent>
-      <CardActions>
-        {isOrderingEnabled ? ( <Button size="small" color="primary" onClick={addFoodToCart}>Sepete Ekle</Button>) :"Sipariş Verilemez" }
-       
+      <CardActions sx={{ justifyContent: 'center' }}>
+        <Button
+          variant="contained"
+          color={isOrderingEnabled ? 'primary' : 'secondary'}
+          onClick={addFoodToCart}
+          disabled={!isOrderingEnabled}
+          sx={{
+            padding: '0.5rem 1.5rem',
+            borderRadius: '30px',
+            background: isOrderingEnabled
+              ? 'linear-gradient(to right, #ff6e7f, #bfe9ff)'
+              : '#ddd',
+            color: '#fff',
+            '&:hover': {
+              background: isOrderingEnabled
+                ? 'linear-gradient(to right, #ff6e7f, #a0e1ff)'
+                : '#ccc',
+            },
+          }}
+        >
+          {isOrderingEnabled ? 'Add To Basket' : 'Cannot Be Ordered'}
+        </Button>
       </CardActions>
     </Card>
   );

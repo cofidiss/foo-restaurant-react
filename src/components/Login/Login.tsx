@@ -7,24 +7,30 @@ import {
   Typography,
   Grid,
   Link,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
-import { AppContext } from "../contexts/AppContext"; // Yeni dosyadan içe aktarıyoruz
-import { debug } from "console";
+import { AppContext } from "../contexts/AppContext";
+import "../../styles/global.css";
 
 const Login: React.FC = () => {
-  debugger; 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-const baseUrl = process.env.REACT_APP_BASE_URL;
-  const { startLoading, stopLoading,setIsLoggedIn } = useContext(AppContext); // Context'ten loader'ı kontrol etmek için kullanılır
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const { startLoading, stopLoading, setIsLoggedIn } = useContext(AppContext);
+
+  const handlePasswordVisibilityToggle = () => {
+    setShowPassword((prevShow) => !prevShow);
+  };
 
   const handleLogin = () => {
-    startLoading(); // İşlem başlamadan önce loading durumunu aktif et
-    setError(""); // Hata mesajını temizle
+    startLoading();
+    setError("");
 
     fetch(`${baseUrl}/api/login`, {
       method: "POST",
@@ -34,20 +40,21 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
       body: JSON.stringify({ userName, password }),
     })
       .then((response) => {
-        if(response.ok){
-        console.log("Giriş başarılı");
-        setIsLoggedIn(true);
-          navigate("/"); // Başarılı giriş sonrası yönlendirme
-      }
-      else {
-        response.text().then(x=>     setError(x || "Giriş başarısız"))
-
-      } })      
-      .catch((error) => {
-        setError("Sunucuya bağlanırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+        if (response.ok) {
+          console.log("Giriş başarılı");
+          setIsLoggedIn(true);
+          navigate("/");
+        } else {
+          response.text().then(() =>
+            setError("Login is unsuccessful.")
+          );
+        }
+      })
+      .catch(() => {
+        setError("Login is unsuccessful.");
       })
       .finally(() => {
-        stopLoading(); // İşlem tamamlandıktan sonra loading durumunu kapat
+        stopLoading();
       });
   };
 
@@ -57,8 +64,9 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
         display="flex"
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
+        justifyContent="flex-start"
         minHeight="100vh"
+        paddingTop={4}
       >
         <Typography variant="h5" component="h1" gutterBottom>
           Login
@@ -77,10 +85,22 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
           variant="outlined"
           fullWidth
           margin="normal"
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={handlePasswordVisibilityToggle}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         {error && (
           <Typography color="error" variant="body2" gutterBottom>
