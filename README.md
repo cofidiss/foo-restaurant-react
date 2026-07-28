@@ -1,46 +1,124 @@
-# Getting Started with Create React App
+# Restaurant Ordering Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern restaurant ordering web application built with **React** and **TypeScript**. Users can register, log in, browse available foods, place orders, and view their previous orders through a clean and responsive user interface.
+
+## Features
+
+- User authentication (Login / Sign Up)
+- Cookie-based authentication
+- Browse food categories and menu items
+- View food details with images
+- Place food orders
+- View personal order history
+- Responsive user interface
+- Protected routes for authenticated users
+
+## Tech Stack
+
+| Layer | Technology |
+|--------|------------|
+| Framework | React 18 + TypeScript |
+| UI Components | Material UI (MUI) |
+| Routing | React Router DOM |
+| HTTP Client | Axios |
+| State Management | React Context API |
+| Form Validation | React Hook Form |
+| Notifications | React Toastify |
+| Containerization | Docker, Nginx (Multi-stage Build) |
+| Orchestration | Docker Compose |
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- npm
+
+### Install & Run
+
+```bash
+npm install
+npm start
+```
+
+The application runs at:
+
+```
+http://localhost:3000
+```
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the project root.
+
+```env
+REACT_APP_API_URL=http://localhost:8080
+```
+
+---
+
+## Docker
+
+Build and run the application using Docker Compose.
+
+```bash
+docker compose up --build
+```
+
+The application will be served by **Nginx** on **port 3000**.
+
+---
+
 
 ## Available Scripts
 
-In the project directory, you can run:
-
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the application in development mode.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Open **http://localhost:3000** to view it in the browser.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the application for production.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The optimized build is generated inside the **build** folder.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+### `npm test`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Runs the test suite.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Authentication
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The application uses **HTTP-Only Cookies** for authentication.
 
-## Learn More
+After a successful login:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- The authentication cookie is automatically stored by the browser.
+- Protected pages require authentication.
+- Unauthorized users are redirected to the login page.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+## Application Workflow
+
+1. Users register or log in.
+2. The frontend authenticates with the backend.
+3. Available food categories and foods are displayed.
+4. Users browse the menu.
+5. Users place food orders.
+6. Users can view their own order history.
+
+---
+
+## Backend
+
+This frontend communicates with the Restaurant Ordering REST API developed using **ASP.NET Core** and **PostgreSQL**.
