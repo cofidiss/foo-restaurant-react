@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/3b8f36ac-e1f4-45b4-8434-b336b36b62a3
+
 # Restaurant Ordering Frontend
 
 A modern restaurant ordering web application built with **React** and **TypeScript**. Users can register, log in, browse available foods, place orders, and view their previous orders through a clean and responsive user interface.
