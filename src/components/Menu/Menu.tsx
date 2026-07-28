@@ -6,12 +6,13 @@ import { Container, Typography, Box, Grid } from '@mui/material';
 import { enDays } from '../constants/enum';
 import { AppContext } from '../contexts/AppContext';
 import { FoodCategoryData } from '../../types/types';
+import { useNavigate } from 'react-router-dom';
 
 const Menu: React.FC = () => {
-  const { startLoading, stopLoading, setModal1State } = useContext(AppContext);
+  const { startLoading, stopLoading, setModal1State ,isLoggedIn} = useContext(AppContext);
   const [selectedDay, setSelectedDay] = useState<enDays>(0);
   const [foodCategories, setFoodCategories] = useState<FoodCategoryData[]>([]);
-
+  const navigate = useNavigate();
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -40,6 +41,11 @@ const Menu: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [selectedDay]);
+  useEffect(() => {
+    if (!isLoggedIn) {
+    navigate('/login');
+    }
+  }, []);
 
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>

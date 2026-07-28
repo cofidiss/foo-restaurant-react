@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, CardActions, Button, Box } from '@mui/ma
 import { AppContext } from '../contexts/AppContext';
 import { FoodCardProps } from '../../types/types';
 
-const FoodCard: React.FC<FoodCardProps> = ({ name, price, description, id, isOrderingEnabled }) => {
+const FoodCard: React.FC<FoodCardProps> = ({ name, price, description, id, isOrderingEnabled, image }) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const { startLoading, stopLoading, refreshNavbar } = useContext(AppContext);
 
@@ -28,11 +28,16 @@ const FoodCard: React.FC<FoodCardProps> = ({ name, price, description, id, isOrd
       '&:hover': { transform: 'scale(1.03)' },
     }}>
       <CardContent sx={{ textAlign: 'center' }}>
-        <img 
-          src={`${baseUrl}/images/${name}.jpg`} 
-          alt={name} 
-          style={{ width: '100%', height: 'auto', borderRadius: '8px', marginBottom: '1rem' }} 
-        />
+<img
+  src={`data:image/jpeg;base64,${image}`}
+  alt={name}
+  style={{
+    width: "100%",
+    height: "auto",
+    borderRadius: "8px",
+    marginBottom: "1rem",
+  }}
+/>
         <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
           {name}
         </Typography>

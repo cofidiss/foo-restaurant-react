@@ -7,10 +7,13 @@ import {
   Box,
   IconButton,
   InputAdornment,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { AppContext } from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
+import { UserRole } from "../../types/types";
 
 const Signup: React.FC = () => {
   type FormState = {
@@ -20,6 +23,7 @@ const Signup: React.FC = () => {
     address: string;
     phone: string;
     error: string;
+    roleId: number; // Add roleId to the state
   };
 
   type FormAction =
@@ -34,6 +38,7 @@ const Signup: React.FC = () => {
     address: "",
     phone: "",
     error: "",
+    roleId: UserRole.StandartUser, // Default role is StandartUser
   };
 
   const navigate = useNavigate();
@@ -64,6 +69,12 @@ const Signup: React.FC = () => {
     setShowPassword((prevShow) => !prevShow);
   };
 
+  const roleLov = Object.entries(UserRole)
+    .filter(([key]) => Number.isNaN(Number(key)))
+    .map(([key, value]) => ({
+      id: value as number,
+      name: key,
+    }));
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (state.password !== state.confirmPassword) {
       dispatch({ type: "SET_ERROR", error: "Passwords do not match!" });
@@ -80,12 +91,13 @@ const Signup: React.FC = () => {
           password: state.password,
           address: state.address,
           phone: state.phone,
+          roleId: state.roleId, // Include roleId in the request body
         }),
       })
         .then((response) => {
           if (response.ok) {
             console.log("Signup başarılı");
-            navigate("/");
+            navigate("/login");
           } else {
             response.text().then((x) =>
               dispatch({
@@ -182,6 +194,20 @@ const Signup: React.FC = () => {
               ),
             }}
           />
+            <Select
+              labelId="role-select-label"
+              id="role-select"
+              fullWidth
+              value={state.roleId.toString()}
+              name="roleId"
+              onChange={(e) => dispatch({ type: "SET_FIELD", field: "roleId", value: e.target.value })}
+            >
+              {roleLov.map((role) => (
+                <MenuItem key={role.id} value={role.id}>
+                  {role.name}
+                </MenuItem>
+              ))}
+            </Select>
           <TextField
             label="Address"
             name="address"

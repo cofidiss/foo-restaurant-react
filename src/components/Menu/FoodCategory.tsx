@@ -30,6 +30,7 @@ const FoodCategory: React.FC<FoodCategoryProps> = ({ category, foodList }) => {
             price={food.price}
             description={food.description}
             isOrderingEnabled={food.isOrderingEnabled}
+            image={food.image} // Pass the image prop to FoodCard
           />
         ))}
       </Box>

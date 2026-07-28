@@ -13,7 +13,7 @@ import { AppContext } from '../contexts/AppContext';
 
 const Navbar: React.FC<NavbarProps> = ({ itemCount }) => {
   const navigate = useNavigate();
-  const { setIsLoggedIn, isLoggedIn } = useContext(AppContext);
+  const { setIsLoggedIn ,isLoggedIn} = useContext(AppContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   // Cookie kontrolü ile login durumu belirleniyor
@@ -34,16 +34,16 @@ const Navbar: React.FC<NavbarProps> = ({ itemCount }) => {
     navigate('/profile');
     handleMenuClose();
   };
-
+debugger;
   const handleLogoutClick = () => {
-    document.cookie = "FooRestaurantApiAuth=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
     setIsLoggedIn(false);
     navigate('/login');
     handleMenuClose();
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" sx={{ backgroundColor: 'rgba(241, 78, 78, 0.8)' }}>
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           <Button 

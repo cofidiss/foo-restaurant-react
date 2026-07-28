@@ -9,6 +9,7 @@ export interface FoodInfoDto {
     description: string;
     id:number;
     isOrderingEnabled:boolean;
+    image: string; // Assuming the image is a base64 string. Adjust the type if it's different.
   }
   
   export interface FoodCategoryProps {
@@ -22,6 +23,7 @@ export interface FoodInfoDto {
     description: string;
     id:number;
     isOrderingEnabled:boolean;
+    image: string; // Assuming the image is a base64 string. Adjust the type if it's different.
   }
   export interface DaySelectorProps {
     selectedDay: enDays;
@@ -121,4 +123,10 @@ interface UpdateOrderProps {
 
     id:number,
     name:string
+  }
+
+
+  export enum UserRole {
+    Admin = 1,
+    StandartUser = 0,
   }
